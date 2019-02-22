@@ -6,15 +6,17 @@ namespace TicTackToe
 {
     public partial class TicTakToeMainForm : Form
     {
+        private TypeOfFigure currentFigure;
         private Board board;
         private Player[] players;
         public TicTakToeMainForm()
         {
             InitializeComponent();
-            board = new Board(3, 3, 3);
+            board = new Board(5, 3, 3);
             players = new Player[2];
             players[0] = new UserPlayer(TypeOfFigure.Cross);
             players[1] = new UserPlayer(TypeOfFigure.Circle);
+            currentFigure = TypeOfFigure.Cross;
         }
 
         private void buttonStart_Click(object sender, System.EventArgs e)
@@ -37,8 +39,8 @@ namespace TicTackToe
             var cellHeight = pictureBoxTicTakToe.Height / (board.Height);
             for (int i = 0; i < board.Width - 1; i++)
             {
-                    graphics.DrawLine
-                        (Pens.Black, cellWidth * (i + 1), 0, cellWidth * (i + 1), pictureBoxTicTakToe.Height);
+                graphics.DrawLine
+                    (Pens.Black, cellWidth * (i + 1), 0, cellWidth * (i + 1), pictureBoxTicTakToe.Height);
             }
             for (int i = 0; i < board.Height - 1; i++)
             {
@@ -67,13 +69,26 @@ namespace TicTackToe
             }
         }
 
+        private void ChangeCurrentFigure()
+        {
+            if (currentFigure == TypeOfFigure.Cross)
+            {
+                currentFigure = TypeOfFigure.Circle;
+            }
+            else
+            {
+                currentFigure = TypeOfFigure.Cross;
+            }
+        }
+
         private void pictureBoxTicTakToe_Click(object sender, System.EventArgs e)
         {
             MouseEventArgs me = (MouseEventArgs)e;
             Point coordinates = me.Location;
             var cellWidth = pictureBoxTicTakToe.Width / (board.Width);
             var cellHeight = pictureBoxTicTakToe.Height / (board.Height);
-            DrawTurn(TypeOfFigure.Cross, coordinates.X / cellWidth, coordinates.Y / cellHeight);
+            DrawTurn(currentFigure, coordinates.X / cellWidth, coordinates.Y / cellHeight);
+            ChangeCurrentFigure();
         }
     }
 }
