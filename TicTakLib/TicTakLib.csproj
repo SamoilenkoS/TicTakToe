@@ -45,6 +45,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="TypeOfFigure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserPlayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
