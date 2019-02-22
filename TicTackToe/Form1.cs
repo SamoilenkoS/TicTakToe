@@ -21,7 +21,7 @@ namespace TicTackToe
         {
             DrawEmptyGrid();
             DrawLines();
-            DrawTurn(TypeOfFigure.Circle, 1, 1);
+           // DrawTurn(TypeOfFigure.Circle, 1, 1);
         }
 
         private void DrawEmptyGrid()
@@ -59,8 +59,21 @@ namespace TicTackToe
                     graphics.DrawEllipse(pen, cellWidth * i, cellHeight * j, cellWidth, cellHeight);
                     break;
                 case TypeOfFigure.Cross:
+                    graphics.DrawLine
+                        (Pens.Blue, cellWidth * i, cellHeight * j, cellWidth * (i + 1), cellHeight * (j + 1));
+                    graphics.DrawLine
+                       (Pens.Blue, cellWidth * (i + 1), cellHeight * j, cellWidth * i, cellHeight * (j + 1));
                     break;
             }
+        }
+
+        private void pictureBoxTicTakToe_Click(object sender, System.EventArgs e)
+        {
+            MouseEventArgs me = (MouseEventArgs)e;
+            Point coordinates = me.Location;
+            var cellWidth = pictureBoxTicTakToe.Width / (board.Width);
+            var cellHeight = pictureBoxTicTakToe.Height / (board.Height);
+            DrawTurn(TypeOfFigure.Cross, coordinates.X / cellWidth, coordinates.Y / cellHeight);
         }
     }
 }

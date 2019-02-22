@@ -43,6 +43,7 @@
             this.pictureBoxTicTakToe.Size = new System.Drawing.Size(282, 281);
             this.pictureBoxTicTakToe.TabIndex = 0;
             this.pictureBoxTicTakToe.TabStop = false;
+            this.pictureBoxTicTakToe.Click += new System.EventHandler(this.pictureBoxTicTakToe_Click);
             // 
             // buttonStart
             // 
