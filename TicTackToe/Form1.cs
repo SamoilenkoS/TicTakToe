@@ -12,7 +12,7 @@ namespace TicTackToe
         public TicTakToeMainForm()
         {
             InitializeComponent();
-            board = new Board(5, 3, 3);
+            board = new Board(3, 3, 3);
             players = new Player[2];
             players[0] = new UserPlayer(TypeOfFigure.Cross);
             players[1] = new UserPlayer(TypeOfFigure.Circle);
@@ -49,24 +49,44 @@ namespace TicTackToe
             }
         }
 
-        private void DrawTurn(TypeOfFigure typeOfFigure, int i, int j)
+        private bool DrawTurn(TypeOfFigure typeOfFigure, int i, int j)
         {
-            Graphics graphics = pictureBoxTicTakToe.CreateGraphics();
-            var cellWidth = pictureBoxTicTakToe.Width / (board.Width);
-            var cellHeight = pictureBoxTicTakToe.Height / (board.Height);
-            switch (typeOfFigure)
+            bool result = board.MakeTurn(typeOfFigure, j, i);
+            if (result)
             {
-                case TypeOfFigure.Circle:
-                    var pen = new Pen(Color.Red, 3);
-                    graphics.DrawEllipse(pen, cellWidth * i, cellHeight * j, cellWidth, cellHeight);
-                    break;
-                case TypeOfFigure.Cross:
-                    graphics.DrawLine
-                        (Pens.Blue, cellWidth * i, cellHeight * j, cellWidth * (i + 1), cellHeight * (j + 1));
-                    graphics.DrawLine
-                       (Pens.Blue, cellWidth * (i + 1), cellHeight * j, cellWidth * i, cellHeight * (j + 1));
-                    break;
+                var graphics = pictureBoxTicTakToe.CreateGraphics();
+                var cellWidth = pictureBoxTicTakToe.Width / (board.Width);
+                var cellHeight = pictureBoxTicTakToe.Height / (board.Height);
+                switch (typeOfFigure)
+                {
+                    case TypeOfFigure.Circle:
+                        Pen pen = new Pen(Color.Red, 3);
+                        graphics.DrawEllipse(pen, cellWidth * i, cellHeight * j, cellWidth, cellHeight);
+                        break;
+                    case TypeOfFigure.Cross:
+                        graphics.DrawLine
+                            (Pens.Blue, cellWidth * i, cellHeight * j, cellWidth * (i + 1), cellHeight * (j + 1));
+                        graphics.DrawLine
+                           (Pens.Blue, cellWidth * (i + 1), cellHeight * j, cellWidth * i, cellHeight * (j + 1));
+                        break;
+                }
+                var winState = board.GetWinState();
+                if (winState.Item1)
+                {
+                    if (winState.Item2 != null)
+                    {
+                        MessageBox.Show($"{winState.Item2} wins!");
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Its a tie!");
+                    }
+                    board = new Board(3, 3, 3);
+                    buttonStart_Click(new object(), new System.EventArgs());
+                    currentFigure = TypeOfFigure.Circle;
+                }
             }
+            return result;
         }
 
         private void ChangeCurrentFigure()
@@ -87,8 +107,11 @@ namespace TicTackToe
             Point coordinates = me.Location;
             var cellWidth = pictureBoxTicTakToe.Width / (board.Width);
             var cellHeight = pictureBoxTicTakToe.Height / (board.Height);
-            DrawTurn(currentFigure, coordinates.X / cellWidth, coordinates.Y / cellHeight);
-            ChangeCurrentFigure();
+            var result = DrawTurn(currentFigure, coordinates.X / cellWidth, coordinates.Y / cellHeight);
+            if (result)
+            {
+                ChangeCurrentFigure();
+            }
         }
     }
 }

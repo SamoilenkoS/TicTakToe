@@ -18,6 +18,13 @@ namespace TicTakLib
             this.height = height;
             this.winCondition = winCondition;
             cells = new Cell[width, height];
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    cells[i, j] = new Cell();
+                }
+            }
             lastTypeOfFigure = TypeOfFigure.Circle;
         }
 
@@ -68,7 +75,7 @@ namespace TicTakLib
             {
                 for (int j = 0; j < width; j++)
                 {
-                    var cellFigure = cells[i, j].GetFigure();
+                    var cellFigure = cells[j, i].GetFigure();
                     if (cellFigure != currentFigure)
                     {
                         currentCount = 1;
@@ -87,58 +94,18 @@ namespace TicTakLib
                 currentFigure = null;
             }
 
-            for (int k = 0; k <= height - winCondition; k++)
+            bool isTie = true;
+            foreach (var cell in cells)
             {
-                for (int i = 0; i <= width - winCondition; i++)
+                if (cell.GetFigure() == null)
                 {
-                    for (int j = 0; j < width + i && j < height + k; j++)
-                    {
-                        var cellFigure = cells[k + j, i + j].GetFigure();
-                        if (cellFigure != currentFigure)
-                        {
-                            currentCount = 1;
-                            currentFigure = cellFigure;
-                        }
-                        else
-                        {
-                            ++currentCount;
-                            if (currentCount == winCondition && currentFigure != null)
-                            {
-                                return new Tuple<bool, TypeOfFigure?>(true, currentFigure);
-                            }
-
-                        }
-                    }
-                    currentCount = 0;
-                    currentFigure = null;
+                    isTie = false;
+                    break;
                 }
             }
-
-            for (int k = height - winCondition; k >= 0; k++)
+            if(isTie)
             {
-                for (int i = width - winCondition; i >= 0; i++)
-                {
-                    for (int j = 0; j < width + i && j < height + k; j++)
-                    {
-                        var cellFigure = cells[k - j, i - j].GetFigure();
-                        if (cellFigure != currentFigure)
-                        {
-                            currentCount = 1;
-                            currentFigure = cellFigure;
-                        }
-                        else
-                        {
-                            ++currentCount;
-                            if (currentCount == winCondition && currentFigure != null)
-                            {
-                                return new Tuple<bool, TypeOfFigure?>(true, currentFigure);
-                            }
-
-                        }
-                    }
-                    currentCount = 0;
-                    currentFigure = null;
-                }
+                return new Tuple<bool, TypeOfFigure?>(true, null);
             }
 
             return new Tuple<bool, TypeOfFigure?>(false, null);
