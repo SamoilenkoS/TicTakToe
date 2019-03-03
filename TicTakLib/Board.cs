@@ -94,6 +94,60 @@ namespace TicTakLib
                 currentFigure = null;
             }
 
+            for (int i = 0; i <= width - winCondition; i++)
+            {
+                for (int j = 0; j <= height - winCondition; j++)
+                {
+                    for (int k = 0; k < (width - i) && k < (height - j); k++)
+                    {
+                        var cellFigure = cells[i + k, j + k].GetFigure();
+                        if (cellFigure != currentFigure)
+                        {
+                            currentCount = 1;
+                            currentFigure = cellFigure;
+                        }
+                        else
+                        {
+                            ++currentCount;
+                            if (currentCount == winCondition && currentFigure != null)
+                            {
+                                return new Tuple<bool, TypeOfFigure?>(true, currentFigure);
+                            }
+
+                        }
+                    }
+                    currentCount = 0;
+                    currentFigure = null;
+                }
+            }
+
+            for (int i = width - 1; i > winCondition ; --i)
+            {
+                for (int j = 0; j <= height - winCondition; ++j)
+                {
+                    for (int k = 0; i - k >= 0 && j + k < height; ++k)
+                    {
+                        var cellFigure = cells[i - k, j + k].GetFigure();
+                        if (cellFigure != currentFigure)
+                        {
+                            currentCount = 1;
+                            currentFigure = cellFigure;
+                        }
+                        else
+                        {
+                            ++currentCount;
+                            if (currentCount == winCondition && currentFigure != null)
+                            {
+                                return new Tuple<bool, TypeOfFigure?>(true, currentFigure);
+                            }
+
+                        }
+                    }
+                    currentCount = 0;
+                    currentFigure = null;
+                }
+            }
+
             bool isTie = true;
             foreach (var cell in cells)
             {

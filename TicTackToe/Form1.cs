@@ -2,6 +2,15 @@
 using System.Windows.Forms;
 using TicTakLib;
 
+//TODO:
+//1) Diagonals
+//2) Score
+//3) PC
+//4) Refactoring
+//5) Menu
+//  a) Who turn fist?
+//  b) Choose opponent
+//  c) Exit
 namespace TicTackToe
 {
     public partial class TicTakToeMainForm : Form
@@ -12,7 +21,7 @@ namespace TicTackToe
         public TicTakToeMainForm()
         {
             InitializeComponent();
-            board = new Board(3, 3, 3);
+            board = new Board(5, 5, 3);
             players = new Player[2];
             players[0] = new UserPlayer(TypeOfFigure.Cross);
             players[1] = new UserPlayer(TypeOfFigure.Circle);
@@ -81,7 +90,7 @@ namespace TicTackToe
                     {
                         MessageBox.Show($"Its a tie!");
                     }
-                    board = new Board(3, 3, 3);
+                    board = new Board(5, 5, 3);
                     buttonStart_Click(new object(), new System.EventArgs());
                     currentFigure = TypeOfFigure.Circle;
                 }
