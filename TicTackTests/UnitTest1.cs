@@ -40,6 +40,7 @@ namespace TicTackTests
         [DataRow("0.0,0.1,0.2", "1.0,2.1,2.0")]//Y
         [DataRow("1.0,0.0,2.0", "1.1,2.1,2.2")]//X
         [DataRow("0.0,1.1,2.2", "1.0,2.1,2.0")]
+        []
         public void Board_WinCondition_Tests(string player1Turns, 
             string player2Turns)
         {
